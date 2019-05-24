@@ -36,7 +36,7 @@ namespace Elect.CV.NumberUtils
             // обрабатываем токены
             foreach (var item in stringTokens)
             {
-                tokens.AddRange(ParseTokens(item, options, ref D));
+                tokens.AddRange(ParseTokens(item, options, ref D, 0));
             }
 
             // вспомогательные переменные
@@ -111,14 +111,17 @@ namespace Elect.CV.NumberUtils
         /// <param name="str"> строковое представление </param>
         /// <param name="options"> настройки </param>
         /// <param name="D"> матрица </param>
+        /// <param name="level"> уровень рекурсии </param>
         /// <returns></returns>
-        protected IEnumerable<NumericToken> ParseTokens(string str, TextToNumberParserOptions options, ref double[,] D)
+        protected IEnumerable<NumericToken> ParseTokens(string str, TextToNumberParserOptions options, ref double[,] D, int level)
         {
             if (TOKENS.TryGetValue(str, out var numeral))
             {
                 return new NumericToken[] { new NumericToken(numeral) };
             }
-            else if (str.Length < 2)
+
+            int length = str.Length;
+            if (length < 2)
             {
                 // слишком короткая строка
                 return EMPTY_TOKEN_ARRAY;
@@ -126,12 +129,17 @@ namespace Elect.CV.NumberUtils
             else
             {
                 // строка не найдена => просчитываем варианты
-                var variants = new List<IEnumerable<NumericToken>>(2);
+                bool complexParsing = length >= 6 && level <= 2;
+                var variants = complexParsing ? new List<IEnumerable<NumericToken>>() : default;
 
                 // вспомогательные переменные
                 double minimalError, error;
 
-                if (str.Length <= MAX_TOKEN_LENGTH)
+                ////////////////////////////////////////////////////////////////
+                // односложная фраза
+                ////////////////////////////////////////////////////////////////
+
+                if (length <= MAX_TOKEN_LENGTH)
                 {
                     // пытаемся распознать с помощью расстояния Левенштейна
                     minimalError = double.PositiveInfinity;
@@ -148,11 +156,62 @@ namespace Elect.CV.NumberUtils
 
                     if (minimalError <= options.MaxTokenError)
                     {
-                        variants.Add(new NumericToken[] { new NumericToken(numeral, minimalError) });
+                        if (complexParsing)
+                        {
+                            // могут быть другие варианты
+                            variants.Add(new NumericToken[] { new NumericToken(numeral, minimalError) });
+                        }
+                        else
+                        {
+                            return new NumericToken[] { new NumericToken(numeral, minimalError) };
+                        }
+                    }
+                    else if (!complexParsing)
+                    {
+                        if (level == 0)
+                        {
+                            // на первом уровне игнорируем плохие токены
+                            return EMPTY_TOKEN_ARRAY;
+                        }
+                        else
+                        {
+                            // в рекурсии возвращаем плохие токены, чтобы они влияли на принятие решения
+                            return new NumericToken[] { new NumericToken(numeral, minimalError) };
+                        }
                     }
                 }
 
+                ////////////////////////////////////////////////////////////////
+                // составная фраза
+                ////////////////////////////////////////////////////////////////
+
+                // строки длиной меньше шести смысла делить нет
+                if (complexParsing)
+                {
+                    for (int i = 3; i <= length - 3; i++)
+                    {
+                        var left = ParseTokens(str.Substring(0, i), options, ref D, level + 1);
+                        var right = ParseTokens(str.Substring(i), options, ref D, level + 1);
+
+                        var union = Enumerable.Union(left, right).ToList();
+                        if (union.Count > 0)
+                        {
+                            if (union.Sum(e => e.Error) != 0)
+                            {
+                                // ухудшаем общий результат на 0.1
+                                union.ForEach(e => e.Error += 0.1 / union.Count);
+                            }
+
+                            // объединяем результат
+                            variants.Add(union);
+                        }
+                    }
+                }
+
+                ////////////////////////////////////////////////////////////////
                 // выбираем лучший вариант
+                ////////////////////////////////////////////////////////////////
+
                 if (variants.Count == 0)
                 {
                     return EMPTY_TOKEN_ARRAY;
@@ -164,7 +223,7 @@ namespace Elect.CV.NumberUtils
                     minimalError = double.PositiveInfinity;
                     foreach (var item in variants)
                     {
-                        error = item.Average(e => e.Error);
+                        error = item.Sum(e => e.Error);
                         if (error < minimalError)
                         {
                             best = item;

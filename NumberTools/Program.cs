@@ -20,8 +20,6 @@ namespace Elect.CV
         /// </summary>
         public void TestConvertAndBack()
         {
-            Console.WindowWidth = 100;
-
             long start = 0;
             long count = 1000;
 
@@ -55,7 +53,7 @@ namespace Elect.CV
                     }
                     else
                     {
-                        var data = str.Split(' ', 2);
+                        var data = str.Split(new char[] { ' ', '\t' }, 2);
                         if (int.TryParse(data[0], out var number))
                         {
                             ParseNumber(data[1].TrimStart(), number);
@@ -73,6 +71,7 @@ namespace Elect.CV
         private void ParseNumber(string str, long number)
         {
             var parsed = parser.Parse(str);
+            bool good = parsed == number;
 
             writer.Write("Значение: ");
             writer.Write(ConsoleColor.White, str);
@@ -83,10 +82,10 @@ namespace Elect.CV
             if (parsed.Error > 0)
             {
                 writer.Write(", ошибка: ");
-                writer.Write(ConsoleColor.Red, parsed.Error.ToString("0.000", CultureInfo.InvariantCulture));
+                writer.Write(good ? ConsoleColor.White : ConsoleColor.Red, parsed.Error.ToString("0.000", CultureInfo.InvariantCulture));
             }
             writer.Write("... ");
-            if (parsed == number)
+            if (good)
             {
                 writer.WriteLineSuccess();
             }
@@ -128,6 +127,9 @@ namespace Elect.CV
 
         static void Main()
         {
+            Console.WindowWidth = Console.BufferWidth = Math.Min(Console.LargestWindowWidth, 100);
+            Console.WindowHeight = Console.BufferHeight = Math.Min(Console.LargestWindowHeight, 80);
+
             var program = new Program();
             //program.TestConvertAndBack();
             program.TestSamples();
