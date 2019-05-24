@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>default</LangVersion>
+    <RootNamespace>Elect.CV</RootNamespace>
+    <Company>Genomancer</Company>
+    <Authors>Doomer3D&lt;doomer.net@gmail.com&gt;</Authors>
+    <Copyright>2019 Копытов Дмитрий</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="NumeralLevenshteinData.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="NumberUtils\NumeralLevenshteinData.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="samples.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
