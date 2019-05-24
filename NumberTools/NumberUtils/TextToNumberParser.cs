@@ -8,9 +8,9 @@ namespace Elect.CV.NumberUtils
     /// <summary>
     /// преобразователь текста в число
     /// </summary>
-    public partial class TextToNumberParser
+    public static partial class TextToNumberParser
     {
-        protected readonly Regex _rgSplitter = new Regex(@"\s+", RegexOptions.Compiled);
+        private static readonly Regex _rgSplitter = new Regex(@"\s+", RegexOptions.Compiled);
 
         /// <summary>
         /// преобразовать текст в число
@@ -18,7 +18,7 @@ namespace Elect.CV.NumberUtils
         /// <param name="text"> текст </param>
         /// <param name="options"> настройки </param>
         /// <returns></returns>
-        public virtual TextToNumberParserResult Parse(string text, TextToNumberParserOptions options = default)
+        public static TextToNumberParserResult Parse(string text, TextToNumberParserOptions options = default)
         {
             if (text == default) throw new ArgumentNullException(nameof(text));
             text = text.Trim().ToLowerInvariant();
@@ -113,7 +113,7 @@ namespace Elect.CV.NumberUtils
         /// <param name="D"> матрица </param>
         /// <param name="level"> уровень рекурсии </param>
         /// <returns></returns>
-        protected IEnumerable<NumericToken> ParseTokens(string str, TextToNumberParserOptions options, ref double[,] D, int level)
+        private static IEnumerable<NumericToken> ParseTokens(string str, TextToNumberParserOptions options, ref double[,] D, int level)
         {
             if (TOKENS.TryGetValue(str, out var numeral))
             {

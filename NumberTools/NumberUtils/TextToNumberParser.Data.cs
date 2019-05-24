@@ -17,17 +17,17 @@ namespace Elect.CV.NumberUtils
         /// <summary>
         /// максимальная длина токена
         /// </summary>
-        protected const int MAX_TOKEN_LENGTH = 12;
+        private const int MAX_TOKEN_LENGTH = 12;
 
         /// <summary>
         /// пустой массив токенов
         /// </summary>
-        protected static readonly NumericToken[] EMPTY_TOKEN_ARRAY = new NumericToken[] { };
+        private static readonly NumericToken[] EMPTY_TOKEN_ARRAY = new NumericToken[] { };
 
         /// <summary>
         /// хеш токенов
         /// </summary>
-        protected static readonly Dictionary<string, Numeral> TOKENS = new Dictionary<string, Numeral>
+        private static readonly Dictionary<string, Numeral> TOKENS = new Dictionary<string, Numeral>
         {
             { "ноль",         new Numeral(0   , 1, false ) },
             { "один",         new Numeral(1   , 1, false ) },

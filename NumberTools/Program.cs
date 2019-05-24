@@ -13,7 +13,6 @@ namespace Elect.CV
     internal sealed class Program
     {
         private readonly ConsoleWriter writer = new ConsoleWriter();
-        private readonly TextToNumberParser parser = new TextToNumberParser();
 
         /// <summary>
         /// протестировать конвертацию числа в текст и наоборот
@@ -70,7 +69,7 @@ namespace Elect.CV
         /// <param name="number"> число-образец </param>
         private void ParseNumber(string str, long number)
         {
-            var parsed = parser.Parse(str);
+            var parsed = TextToNumberParser.Parse(str);
             bool good = parsed == number;
 
             writer.Write("Значение: ");
