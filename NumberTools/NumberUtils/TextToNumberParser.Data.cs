@@ -2,6 +2,8 @@
 #define USE_MILLIARDS
 #define USE_TRILLIONS
 
+#define USE_SLANG_WORDS
+
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +18,11 @@ namespace Elect.CV.NumberUtils
         /// максимальная длина токена
         /// </summary>
         protected const int MAX_TOKEN_LENGTH = 12;
+
+        /// <summary>
+        /// пустой массив токенов
+        /// </summary>
+        protected static readonly NumericToken[] EMPTY_TOKEN_ARRAY = new NumericToken[] { };
 
         /// <summary>
         /// хеш токенов
@@ -78,6 +85,44 @@ namespace Elect.CV.NumberUtils
             { "триллион",     new Numeral(1000000000000, 7, true  ) },
             { "триллиона",    new Numeral(1000000000000, 7, true  ) },
             { "триллионов",   new Numeral(1000000000000, 7, true  ) },
+#endif
+#if USE_SLANG_WORDS
+            { "трешка",       new Numeral(3,    1, true  ) },
+            { "трешки",       new Numeral(3,    1, true  ) },
+            { "трешкек",      new Numeral(3,    1, true  ) },
+            { "червонец",     new Numeral(10,   1, true  ) },
+            { "червонца",     new Numeral(10,   1, true  ) },
+            { "червонцев",    new Numeral(10,   1, true  ) },
+            { "полтос",       new Numeral(50,   1, true  ) },
+            { "полтоса",      new Numeral(50,   1, true  ) },
+            { "полтосов",     new Numeral(50,   1, true  ) },
+            { "полтинник",    new Numeral(50,   1, true  ) },
+            { "полтинника",   new Numeral(50,   1, true  ) },
+            { "полтинников",  new Numeral(50,   1, true  ) },
+            { "сотка",        new Numeral(100,  3, true  ) },
+            { "сотки",        new Numeral(100,  3, true  ) },
+            { "соток",        new Numeral(100,  3, true  ) },
+            { "стольник",     new Numeral(100,  3, true  ) },
+            { "стольника",    new Numeral(100,  3, true  ) },
+            { "стольников",   new Numeral(100,  3, true  ) },
+            { "пятихатка",    new Numeral(500,  3, true  ) },
+            { "пятихатки",    new Numeral(500,  3, true  ) },
+            { "пятихаток",    new Numeral(500,  3, true  ) },
+            { "тыща",         new Numeral(1000, 4, true  ) },
+            { "тыщи",         new Numeral(1000, 4, true  ) },
+            { "тыщ",          new Numeral(1000, 4, true  ) },
+            { "штука",        new Numeral(1000, 4, true  ) },
+            { "штуки",        new Numeral(1000, 4, true  ) },
+            { "штук",         new Numeral(1000, 4, true  ) },
+            { "косарь",       new Numeral(1000, 4, true  ) },
+            { "косаря",       new Numeral(1000, 4, true  ) },
+            { "косарей",      new Numeral(1000, 4, true  ) },
+            { "кусок",        new Numeral(1000, 4, true  ) },
+            { "куска",        new Numeral(1000, 4, true  ) },
+            { "кусков",       new Numeral(1000, 4, true  ) },
+            { "лимон",        new Numeral(1000000, 5, true  ) },
+            { "лимона",       new Numeral(1000000, 5, true  ) },
+            { "лимонов",      new Numeral(1000000, 5, true  ) },
 #endif
         };
     }

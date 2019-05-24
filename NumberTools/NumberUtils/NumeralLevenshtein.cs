@@ -9,7 +9,7 @@ namespace Elect.CV.NumberUtils
     /// <summary>
     /// реализация расстояния Левенштейна для числительных
     /// </summary>
-    public sealed class NumeralLevenshtein
+    public static class NumeralLevenshtein
     {
         /// <summary>
         /// таблица стоимости вставки
@@ -56,54 +56,139 @@ namespace Elect.CV.NumberUtils
             int m = s1.Length, n = s2.Length;
 
             // вспомогательные переменные
-            int i, j;
+            int i, j, a = 1, b = 0;
             char c1, c2;
-            double[,] D = new double[m + 1, n + 1];
+            double[,] D = new double[2, n + 1];
             double costInsert, costDelete, costUpdate;
 
-            for (j = 1; j <= n; j++)
+            for (i = 0; i <= m; i++)
             {
-                // считаем стоимость вставки
-                if (!_insert.TryGetValue(s2[j - 1], out costInsert)) costInsert = _insertNonTableChar;
-                D[0, j] = D[0, j - 1] + costInsert;
-            }
-
-            for (i = 1; i <= m; i++)
-            {
-                c1 = s1[i - 1];
-
-                // считаем стоимость удаления
-                if (!_delete.TryGetValue(c1, out costDelete)) costDelete = _deleteNonTableChar;
-                D[i, 0] = D[i - 1, 0] + costDelete;
-
-                for (j = 1; j <= n; j++)
+                for (j = 0; j <= n; j++)
                 {
-                    c2 = s2[j - 1];
-                    if (c1 != c2)
+                    if (i != 0 || j != 0)
                     {
-                        // считаем стоимость удаления
-                        if (!_delete.TryGetValue(c1, out costDelete)) costDelete = _deleteNonTableChar;
+                        if (i == 0)
+                        {
+                            // считаем стоимость вставки
+                            if (!_insert.TryGetValue(s2[j - 1], out costInsert)) costInsert = _insertNonTableChar;
+                            D[1, j] = D[1, j - 1] + costInsert;
+                        }
+                        else if (j == 0)
+                        {
+                            // считаем стоимость удаления
+                            if (!_delete.TryGetValue(s1[i - 1], out costDelete)) costDelete = _deleteNonTableChar;
+                            D[a, 0] = D[b, 0] + costDelete;
+                        }
+                        else
+                        {
+                            c1 = s1[i - 1];
+                            c2 = s2[j - 1];
+                            if (c1 != c2)
+                            {
+                                // считаем стоимость удаления
+                                if (!_delete.TryGetValue(c1, out costDelete)) costDelete = _deleteNonTableChar;
 
-                        // считаем стоимость вставки
-                        if (!_insert.TryGetValue(c2, out costInsert)) costInsert = _insertNonTableChar;
+                                // считаем стоимость вставки
+                                if (!_insert.TryGetValue(c2, out costInsert)) costInsert = _insertNonTableChar;
 
-                        // считаем стоимость замены
-                        if (!_update.TryGetValue((c1, c2), out costUpdate)) costUpdate = _updateNonTableChar;
+                                // считаем стоимость замены
+                                if (!_update.TryGetValue((c1, c2), out costUpdate)) costUpdate = _updateNonTableChar;
 
-                        D[i, j] = Math.Min(Math.Min(
-                            D[i - 1, j] + costDelete,
-                            D[i, j - 1] + costInsert),
-                            D[i - 1, j - 1] + costUpdate
-                        );
-                    }
-                    else
-                    {
-                        D[i, j] = D[i - 1, j - 1];
+                                D[a, j] = Math.Min(Math.Min(
+                                    D[b, j] + costDelete,
+                                    D[a, j - 1] + costInsert),
+                                    D[b, j - 1] + costUpdate
+                                );
+                            }
+                            else
+                            {
+                                D[a, j] = D[b, j - 1];
+                            }
+                        }
                     }
                 }
+                (a, b) = (b, a);
             }
 
-            return relative ? D[m, n] / n : D[m, n];
+            return relative ? D[b, n] / n : D[b, n];
+        }
+
+        /// <summary>
+        /// определить степень похожести строк (расстояние Левенштейна)
+        /// </summary>
+        /// <param name="s1"> строка 1 </param>
+        /// <param name="s2"> строка 2 </param>
+        /// <param name="D"> матрица </param>
+        /// <param name="relative"> указывает, что необходимо считать относительную похожесть </param>
+        /// <returns></returns>
+        public static double CompareStrings(string s1, string s2, ref double[,] D, bool relative = true)
+        {
+            s1 = s1.ToLowerInvariant();
+            s2 = s2.ToLowerInvariant();
+
+            int m = s1.Length, n = s2.Length;
+
+            // вспомогательные переменные
+            int i, j, a = 1, b = 0;
+            char c1, c2;
+            if (D.GetLength(0) < 2 || D.GetLength(1) < n + 1) D = new double[2, n + 1];
+            else
+            {
+                // очищаем массив
+                for (j = 0; j <= n; j++) { D[0, j] = 0; D[1, j] = 0; }
+            }
+            double costInsert, costDelete, costUpdate;
+
+            for (i = 0; i <= m; i++)
+            {
+                for (j = 0; j <= n; j++)
+                {
+                    if (i != 0 || j != 0)
+                    {
+                        if (i == 0)
+                        {
+                            // считаем стоимость вставки
+                            if (!_insert.TryGetValue(s2[j - 1], out costInsert)) costInsert = _insertNonTableChar;
+                            D[1, j] = D[1, j - 1] + costInsert;
+                        }
+                        else if (j == 0)
+                        {
+                            // считаем стоимость удаления
+                            if (!_delete.TryGetValue(s1[i - 1], out costDelete)) costDelete = _deleteNonTableChar;
+                            D[a, 0] = D[b, 0] + costDelete;
+                        }
+                        else
+                        {
+                            c1 = s1[i - 1];
+                            c2 = s2[j - 1];
+                            if (c1 != c2)
+                            {
+                                // считаем стоимость удаления
+                                if (!_delete.TryGetValue(c1, out costDelete)) costDelete = _deleteNonTableChar;
+
+                                // считаем стоимость вставки
+                                if (!_insert.TryGetValue(c2, out costInsert)) costInsert = _insertNonTableChar;
+
+                                // считаем стоимость замены
+                                if (!_update.TryGetValue((c1, c2), out costUpdate)) costUpdate = _updateNonTableChar;
+
+                                D[a, j] = Math.Min(Math.Min(
+                                    D[b, j] + costDelete,
+                                    D[a, j - 1] + costInsert),
+                                    D[b, j - 1] + costUpdate
+                                );
+                            }
+                            else
+                            {
+                                D[a, j] = D[b, j - 1];
+                            }
+                        }
+                    }
+                }
+                (a, b) = (b, a);
+            }
+
+            return relative ? D[b, n] / n : D[b, n];
         }
 
         /// <summary>
