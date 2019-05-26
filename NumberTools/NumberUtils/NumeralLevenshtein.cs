@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace Elect.CV.NumberUtils
+namespace Genesis.CV.NumberUtils
 {
     /// <summary>
     /// реализация расстояния Левенштейна для числительных

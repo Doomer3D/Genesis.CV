@@ -8,8 +8,6 @@ namespace Genesis.IO
     /// </summary>
     public class ConsoleWriter
     {
-        #region Declarations
-
         private ConsoleColor _successColor;     // цвет сообщений для успешных операций
         private ConsoleColor _errorColor;       // цвет сообщений об ошибках
         private ConsoleColor _warningColor;     // цвет сообщений-предупреждений
@@ -17,9 +15,6 @@ namespace Genesis.IO
         private string _successText;            // текст сообщений для успешных операций
         private string _errorText;              // текст сообщений об ошибках
         private string _warningText;            // текст сообщений-предупреждений
-
-        #endregion
-        #region Properties
 
         /// <summary>
         /// цвет сообщений для успешных операций
@@ -61,10 +56,6 @@ namespace Genesis.IO
         /// </summary>
         public ConsoleColor BackgroundColor { get => Console.BackgroundColor; set => Console.BackgroundColor = value; }
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
         /// конструктор
         /// </summary>
@@ -78,14 +69,6 @@ namespace Genesis.IO
             _errorText = "ERROR";
             _warningText = "WARNING";
         }
-
-        #endregion
-
-        #region Private methods
-        #endregion
-        #region Protected methods
-        #endregion
-        #region Public methods
 
         #region Write | WriteLine
 
@@ -381,7 +364,5 @@ namespace Genesis.IO
 
             WriteLineError(sb.ToString().Trim());
         }
-
-        #endregion
     }
 }

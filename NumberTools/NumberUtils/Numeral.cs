@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Elect.CV.NumberUtils
+namespace Genesis.CV.NumberUtils
 {
     /// <summary>
     /// числительное

@@ -6,9 +6,9 @@ using System.Linq;
 
 using Genesis.IO;
 
-using Elect.CV.NumberUtils;
+using Genesis.CV.NumberUtils;
 
-namespace Elect.CV
+namespace Genesis.CV
 {
     internal sealed class Program
     {
@@ -17,14 +17,14 @@ namespace Elect.CV
         /// <summary>
         /// протестировать конвертацию числа в текст и наоборот
         /// </summary>
-        public void TestConvertAndBack()
+        public void TestConvertAndBack()    
         {
-            long start = 0;
-            long count = 1000;
+            long start = 0L;
+            long count = 50;
 
             for (long i = start; i < start + count; i++)
             {
-                var str = RussianNumber.Str(i);
+                var str = RussianNumber.ToString(i);
 
                 ParseNumber(str, i);
             }
@@ -69,7 +69,7 @@ namespace Elect.CV
         /// <param name="number"> число-образец </param>
         private void ParseNumber(string str, long number)
         {
-            var parsed = TextToNumberParser.Parse(str);
+            var parsed = RussianNumber.Parse(str);
             bool good = parsed == number;
 
             writer.Write("Значение: ");
@@ -81,7 +81,7 @@ namespace Elect.CV
             if (parsed.Error > 0)
             {
                 writer.Write(", ошибка: ");
-                writer.Write(good ? ConsoleColor.White : ConsoleColor.Red, parsed.Error.ToString("0.000", CultureInfo.InvariantCulture));
+                writer.Write(good ? ConsoleColor.DarkRed : ConsoleColor.Red, parsed.Error.ToString("0.000", CultureInfo.InvariantCulture));
             }
             writer.Write("... ");
             if (good)
@@ -136,25 +136,32 @@ namespace Elect.CV
 
         #region Stats
 
+        /// <summary>
+        /// функция формирования статистики по используемым символам и токенам
+        /// </summary>
         private void Stats()
         {
             var list = new List<string>();
 
             for (int i = 0; i < 99999; i++)
             {
-                list.Add(RussianNumber.Str(i).ToLowerInvariant());
+                list.Add(RussianNumber.ToString(i).ToLowerInvariant());
             }
 
             // список символов
-            var chars = list.SelectMany(e => e).Distinct().Where(e => char.IsLetter(e)).OrderBy(e => e).ToList();
+            var chars = list.SelectMany(e => e).Distinct().Where(e => char.IsLetter(e)).OrderBy(e => e).ToArray();
 
             // список токенов
-            var tokens = list.SelectMany(e => e.Split()).Distinct().OrderBy(e => (e.Length, e)).ToList();
+            var tokens = list.SelectMany(e => e.Split()).Distinct().OrderBy(e => (e.Length, e)).ToArray();
 
-            var validChars = new string(chars.ToArray());
+            // используемые символы
+            var validChars = new string(chars);
+
+            // неиспользуемые символы
             var invalidChars = new string("абвгдеёжзийклмнопрстуфхцчшщъыьэюя".Except(chars).ToArray());
 
-            var tokensList = string.Join(Environment.NewLine, tokens.ToArray());
+            // список токенов текстом
+            var tokensList = string.Join(Environment.NewLine, tokens);
         }
 
         #endregion
