@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>default</LangVersion>
     <RootNamespace>Genesis.CV</RootNamespace>
@@ -10,6 +10,8 @@
     <Copyright>2019 Копытов Дмитрий</Copyright>
     <PackageId>Genesis.CV.NumberUtils</PackageId>
     <AssemblyName>Genesis.CV</AssemblyName>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,12 +22,6 @@
     <EmbeddedResource Include="NumberUtils\NumeralLevenshteinData.txt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="samples.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
