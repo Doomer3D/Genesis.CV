@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>default</LangVersion>
     <RootNamespace>Genesis.CV</RootNamespace>
     <Company>Genomancer</Company>
@@ -12,10 +12,17 @@
     <AssemblyName>Genesis.CV</AssemblyName>
     <ApplicationIcon />
     <StartupObject />
+    <PackageProjectUrl>https://github.com/Doomer3D/Genesis.CV</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Doomer3D/Genesis.CV</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="NumeralLevenshteinData.txt" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

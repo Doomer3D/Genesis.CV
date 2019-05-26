@@ -141,12 +141,12 @@ namespace Genesis.CV.NumberUtils
                     // пытаемся распознать с помощью расстояния Левенштейна
                     minimalError = double.PositiveInfinity;
 
-                    foreach (var (token, data) in TOKENS)
+                    foreach (var item in TOKENS)
                     {
-                        error = NumeralLevenshtein.CompareStrings(str, token, ref D, true);
+                        error = NumeralLevenshtein.CompareStrings(str, item.Key, ref D, true);
                         if (error < minimalError)
                         {
-                            numeral = data;
+                            numeral = item.Value;
                             minimalError = error;
                         }
                     }
