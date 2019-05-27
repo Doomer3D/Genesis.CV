@@ -3,7 +3,7 @@
 namespace Genesis.CV.NumberUtils
 {
     /// <summary>
-    /// числовой токен
+    /// токен
     /// </summary>
     [System.Diagnostics.DebuggerDisplay("Value: {Value.Value}; Error: {Error}")]
     public class NumericToken
@@ -19,7 +19,7 @@ namespace Genesis.CV.NumberUtils
         public double Error { get; set; }
 
         /// <summary>
-        /// указывает, что токен был важен для распознавания
+        /// указывает, что токен был использован для распознавания
         /// </summary>
         public bool IsSignificant { get; set; }
 

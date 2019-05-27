@@ -19,27 +19,27 @@ namespace Genesis.CV.NumberUtils
         public int Level { get; private set; }
 
         /// <summary>
-        /// признак сложного числительного
+        /// признак множителя
         /// </summary>
         /// <remarks>
         /// тысяча, миллион и прочие числительные, умножаемые на коэффициент перед ними
         /// </remarks>
-        public bool IsComplexNumeral { get; set; }
+        public bool IsMultiplier { get; set; }
 
         /// <summary>
         /// конструктор
         /// </summary>
         /// <param name="value"> значение </param>
         /// <param name="level"> уровень </param>
-        /// <param name="isComplexNumeral"> признак сложного числительного </param>
-        public Numeral(long value, int level, bool isComplexNumeral) => (Value, Level, IsComplexNumeral) = (value, level, isComplexNumeral);
+        /// <param name="isMultiplier"> признак множителя </param>
+        public Numeral(long value, int level, bool isMultiplier) => (Value, Level, IsMultiplier) = (value, level, isMultiplier);
 
         /// <summary>
         /// деконструктор
         /// </summary>
         /// <param name="value"> значение </param>
         /// <param name="level"> уровень </param>
-        /// <param name="isComplexNumeral"> признак сложного числительного </param>
-        public void Deconstruct(out long value, out int level, out bool isComplexNumeral) => (value, level, isComplexNumeral) = (Value, Level, IsComplexNumeral);
+        /// <param name="isMultiplier"> признак множителя </param>
+        public void Deconstruct(out long value, out int level, out bool isMultiplier) => (value, level, isMultiplier) = (Value, Level, IsMultiplier);
     }
 }

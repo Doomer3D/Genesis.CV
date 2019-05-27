@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Genesis.CV", "Genesis.CV\Genesis.CV.csproj", "{9DF00ACF-7C0D-48AB-A1AD-01CD4B12C394}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberUtils", "Samples\NumberUtils\NumberUtils.csproj", "{12BBC145-8DEE-459B-B366-95D322E373B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumberUtils", "Samples\NumberUtils\NumberUtils.csproj", "{12BBC145-8DEE-459B-B366-95D322E373B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

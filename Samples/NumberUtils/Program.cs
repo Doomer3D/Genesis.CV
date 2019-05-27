@@ -129,7 +129,11 @@ namespace NumberUtils
             Console.WindowHeight = Console.BufferHeight = Math.Min(Console.LargestWindowHeight, 80);
 
             var program = new Program();
+
+            //// конвертация в текст и обратно
             //program.TestConvertAndBack();
+
+            // прогон примеров из файла samplex.txt
             program.TestSamples();
         }
 

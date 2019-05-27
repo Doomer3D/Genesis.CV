@@ -48,10 +48,10 @@ namespace Genesis.CV.NumberUtils
                 var token = tokens[i];
                 if (token.Error > options.MaxTokenError) continue;
 
-                var (value, level, complex) = token.Value;
-                if (complex)
+                var (value, level, multiplier) = token.Value;
+                if (multiplier)
                 {
-                    // сложное числительное
+                    // множитель
                     if (!globalLevel.HasValue || globalLevel.Value > level)
                     {
                         globalValue = globalValue.GetValueOrDefault() + (localValue ?? 1) * value;
