@@ -15,11 +15,11 @@ namespace Genesis.CV.NumberUtils
         /// <param name="text"> текст </param>
         /// <param name="options"> настройки </param>
         /// <returns></returns>
-        public static TextToNumberParserResult Parse(string text, RussianNumberParserOptions options = default)
+        public static RussianNumberParserResult Parse(string text, RussianNumberParserOptions options = default)
         {
             if (text == default) throw new ArgumentNullException(nameof(text));
             text = text.Trim().ToLowerInvariant();
-            if (text.Length == 0) return TextToNumberParserResult.Failed;
+            if (text.Length == 0) return RussianNumberParserResult.Failed;
 
             if (options == default) options = RussianNumberParserOptions.Default;
 
@@ -99,7 +99,7 @@ namespace Genesis.CV.NumberUtils
                 else totalError *= 2;
             }
 
-            return new TextToNumberParserResult(globalValue.GetValueOrDefault() + localValue.GetValueOrDefault(), totalError);
+            return new RussianNumberParserResult(globalValue.GetValueOrDefault() + localValue.GetValueOrDefault(), totalError);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace Genesis.CV.NumberUtils
     /// результат преобразования текста в число
     /// </summary>
     [System.Diagnostics.DebuggerDisplay("Value: {Value}; Error: {Error}")]
-    public class TextToNumberParserResult
+    public class RussianNumberParserResult
     {
         /// <summary>
         /// значение
@@ -22,31 +22,31 @@ namespace Genesis.CV.NumberUtils
         /// конструктор
         /// </summary>
         /// <param name="value"> значение </param>
-        public TextToNumberParserResult(long value) => (Value, Error) = (value, 0);
+        public RussianNumberParserResult(long value) => (Value, Error) = (value, 0);
 
         /// <summary>
         /// конструктор
         /// </summary>
         /// <param name="value"> значение </param>
         /// <param name="error"> ошибка распознавания </param>
-        public TextToNumberParserResult(long value, double error) => (Value, Error) = (value, error);
+        public RussianNumberParserResult(long value, double error) => (Value, Error) = (value, error);
 
         public override string ToString() => Value.ToString();
 
         /// <summary>
         /// ошибочный результат
         /// </summary>
-        public static TextToNumberParserResult Failed { get; private set; }
+        public static RussianNumberParserResult Failed { get; private set; }
 
         /// <summary>
         /// статический конструктор
         /// </summary>
-        static TextToNumberParserResult()
+        static RussianNumberParserResult()
         {
-            Failed = new TextToNumberParserResult(0, 1);
+            Failed = new RussianNumberParserResult(0, 1);
         }
 
-        public static implicit operator int(TextToNumberParserResult value) => (int)value.Value;
-        public static implicit operator long(TextToNumberParserResult value) => value.Value;
+        public static implicit operator int(RussianNumberParserResult value) => (int)value.Value;
+        public static implicit operator long(RussianNumberParserResult value) => value.Value;
     }
 }
