@@ -18,3 +18,5 @@ RussianNumber.ToString(123);
 // обратное преобразование
 RussianNumber.Parse("сто двадцать три");
 ```
+
+Компонент описан на хабре: [статья](https://habr.com/ru/post/453642/ "статья").
